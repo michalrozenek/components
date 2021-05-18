@@ -1,7 +1,7 @@
 ---
 title: Button
 component: Button
-description: The Button component is a light wrapper around an HTML button element
+description: The Button component is a light wrapper around an HTML button(default) or HTML anchor element
 category: Navigation
 ---
 
@@ -75,4 +75,21 @@ Setting `isRounded` creates a rounded button
 
 ```tsx live
 <Button isRounded>Rounded Button</Button>
+```
+
+## Polymorphic
+
+We support polymorphic feature, so depends on passed property
+(onClick / href) the DOM output would be different
+
+```tsx preview
+<Button href="http://example.com/">
+  I'm a link
+</Button>
+```
+
+```tsx preview
+<Button onClick={() => console.log('clicked')}>
+  I'm a button
+</Button>
 ```

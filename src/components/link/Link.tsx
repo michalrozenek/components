@@ -25,17 +25,30 @@ const StyledLink = styled('a', {
   }
 })
 
+type LinkActions =
+  | { onClick: (...args: unknown[]) => void; href?: never }
+  | { onClick?: never; href: string }
+
 type LinkProps = Override<
   React.ComponentProps<typeof StyledLink>,
   {
     as?: React.ComponentType | React.ElementType
-  }
+  } & LinkActions
 >
 
-export const Link: React.FC<LinkProps> = React.forwardRef(
-  ({ size = 'md', ...remainingProps }, ref) => (
-    <StyledLink size={size} {...remainingProps} ref={ref} />
-  )
-)
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+  ({ size = 'md', onClick, href, ...remainingProps }, ref) =>
+    onClick ? (
+      <StyledLink
+        as="button"
+        size={size}
+        {...remainingProps}
+        ref={ref}
+        onClick={onClick}
+      />
+    ) : (
+      <StyledLink size={size} {...remainingProps} ref={ref} href={href} />
+    )
+) as React.FC<LinkProps>
 
 Link.displayName = 'Link'

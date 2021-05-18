@@ -1,7 +1,7 @@
 ---
 title: Link
 component: Link
-description: Link is a light wrapper around the HTML anchor element
+description: Link is a light wrapper around the HTML anchor(default) or HTML button element
 category: Navigation
 ---
 
@@ -22,5 +22,21 @@ It adds default styling and the `css` prop.
 ```tsx preview
 <Link href="http://example.com/" size="lg">
   I'm a link
+</Link>
+```
+## Polymorphic
+
+We support polymorphic feature, so depends on passed property
+(onClick / href) the DOM output would be different
+
+```tsx preview
+<Link href="http://example.com/">
+  I'm a link
+</Link>
+```
+
+```tsx preview
+<Link onClick={() => console.log('clicked')}>
+  I'm a button
 </Link>
 ```

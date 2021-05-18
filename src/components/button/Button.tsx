@@ -189,24 +189,26 @@ const getChildren = (children) =>
     return child
   })
 
+type ButtonActions =
+  | { onClick: (...args: unknown[]) => void; href?: never }
+  | { onClick?: never; href: string }
+
 type ButtonProps = Override<
   React.ComponentProps<typeof StyledButton>,
   StitchesVariants<typeof StyledButton> & {
     as?: React.ComponentType | React.ElementType
     children: React.ReactNode
     isLoading?: boolean
-    onClick?: () => void
-    to?: string
-  }
+  } & ButtonActions
 >
 
-export const Button: React.FC<ButtonProps> = React.forwardRef(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
       isLoading,
       onClick,
-      to,
+      href,
       appearance = 'solid',
       size = 'md',
       theme = 'primary',
@@ -215,7 +217,13 @@ export const Button: React.FC<ButtonProps> = React.forwardRef(
     },
     ref
   ) => {
-    const optionalLinkProps = to ? { as: 'a', href: to } : {}
+    const optionalLinkProps = href
+      ? {
+          as: 'a',
+          href,
+          onClick: undefined
+        }
+      : {}
 
     // Note: button is not disabled when loading for accessibility purposes.
     // Instead the click action is not fired and the button looks faded
@@ -239,6 +247,6 @@ export const Button: React.FC<ButtonProps> = React.forwardRef(
       </StyledButton>
     )
   }
-)
+) as React.FC<ButtonProps>
 
 Button.displayName = 'Button'
